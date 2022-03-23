@@ -25,7 +25,7 @@ Using [diagrams.net](https://www.diagrams.net/), database is reprented as below 
 - Contract: signed by client to organize an event
 - Event: all event informations
 
-![plot](./Diagram.png)
+![plot](./ERD.png)
 
 ### Installation
 
@@ -64,4 +64,4 @@ The API can be tested in local at the following adresse : http://127.0.0.1:8000/
 ### Sources
 
 Starting with django : https://docs.djangoproject.com/fr/4.0/intro/tutorial01/
-Connexion with PostgreSQL : https://docs.djangoproject.com/fr/4.0/ref/databases/#postgresql-notes
+Connexion with PostgreSQL : https://dev.to/jkaylight/django-rest-framework-with-postgresql-a-crud-tutorial-1l34

@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'epicevents',
 ]
 
 MIDDLEWARE = [
@@ -75,11 +77,12 @@ WSGI_APPLICATION = 'settings.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'OPTIONS': {
-            'service': 'my_service',
-            'passfile': '.my_pgpass',
-        },
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'crmdb',
+        'USER': 'admin',
+        'PASSWORD': 'pwd_admin',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
