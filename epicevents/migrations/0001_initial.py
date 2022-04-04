@@ -15,7 +15,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Client',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('compagny_name', models.CharField(max_length=250)),
                 ('last_contact', models.DateField(auto_now_add=True)),
                 ('status', models.BooleanField()),
@@ -24,27 +25,33 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Contract',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_date', models.DateField(auto_now_add=True)),
                 ('updated_date', models.DateField(auto_now_add=True)),
                 ('amount', models.FloatField()),
                 ('payment_due', models.DateField(auto_now_add=True)),
-                ('client_contact', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='epicevents.client')),
+                ('client_contact', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='epicevents.client')),
             ],
         ),
         migrations.CreateModel(
             name='Employee',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('function', models.CharField(max_length=250)),
-                ('role', models.CharField(choices=[('manager', 'Manager'), ('sales', 'Sales'), ('support', 'Support')], max_length=25)),
+                ('role', models.CharField(choices=[
+                 ('manager', 'Manager'), ('sales', 'Sales'), ('support', 'Support')], max_length=25)),
             ],
         ),
         migrations.CreateModel(
             name='Person',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('username', models.CharField(max_length=25, verbose_name='username')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('username', models.CharField(
+                    max_length=25, verbose_name='username')),
                 ('password', models.CharField(max_length=25)),
                 ('first_name', models.CharField(max_length=25)),
                 ('last_name', models.CharField(max_length=25)),
@@ -57,35 +64,42 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Event',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_date', models.DateField(auto_now_add=True)),
                 ('updated_date', models.DateField(auto_now_add=True)),
                 ('event_date', models.DateField(auto_now_add=True)),
                 ('notes', models.TextField(blank=True, max_length=2048)),
                 ('attendees', models.IntegerField()),
                 ('closed', models.BooleanField()),
-                ('contract_reference', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='epicevents.contract')),
-                ('support_contact', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='epicevents.employee')),
+                ('contract_reference', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='epicevents.contract')),
+                ('support_contact', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='epicevents.employee')),
             ],
         ),
         migrations.AddField(
             model_name='employee',
             name='person',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='epicevents.person'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='epicevents.person'),
         ),
         migrations.AddField(
             model_name='contract',
             name='sales_contact',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='epicevents.employee'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='epicevents.employee'),
         ),
         migrations.AddField(
             model_name='client',
             name='client_contact',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='epicevents.person'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='epicevents.person'),
         ),
         migrations.AddField(
             model_name='client',
             name='sales_contact',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='epicevents.employee'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='epicevents.employee'),
         ),
     ]

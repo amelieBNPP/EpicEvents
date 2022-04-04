@@ -9,7 +9,6 @@ ROLE = (
 
 class Person(models.Model):
     username = models.CharField("username", max_length=25)
-    password = models.CharField(max_length=25)
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
     email = models.EmailField(max_length=100, blank=True)
