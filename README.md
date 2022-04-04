@@ -61,6 +61,13 @@ python manage.py runserver
 
 The API can be tested in local at the following adresse : http://127.0.0.1:8000/
 
+### Admin
+
+Create a superUser in `manage.py` directory : 
+```bash
+python manage.py createsuperuser
+```
+
 ### Sources
 
 Starting with django : https://docs.djangoproject.com/fr/4.0/intro/tutorial01/
