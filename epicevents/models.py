@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 ROLE = (
     ('manager', 'Manager'),
@@ -7,24 +8,11 @@ ROLE = (
 )
 
 
-class Person(models.Model):
-    username = models.CharField("username", max_length=25)
-    first_name = models.CharField(max_length=25)
-    last_name = models.CharField(max_length=25)
-    email = models.EmailField(max_length=100, blank=True)
-    phone = models.CharField(max_length=20, blank=True)
-    mobile = models.CharField(max_length=20, blank=True)
-    created = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return self.username
-
-
 class Employee(models.Model):
     function = models.CharField(max_length=250)
     role = models.CharField(choices=ROLE, max_length=25)
-    person = models.ForeignKey(
-        to=Person,
+    employee_contact = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
 
@@ -34,7 +22,7 @@ class Client(models.Model):
     last_contact = models.DateField(auto_now_add=True)
     status = models.BooleanField()
     client_contact = models.ForeignKey(
-        to=Person,
+        to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
     sales_contact = models.ForeignKey(

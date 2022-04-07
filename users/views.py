@@ -1,22 +1,14 @@
-from settings.settings import JWT_AUTH
 import datetime
 import jwt
+
 from users.serializers import UserSerializer
-from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth.models import User
-from rest_framework_jwt.settings import api_settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework import status
-# import re
-# from django.shortcuts import render
-# from django.contrib.auth import authenticate, login, logout
-# from django.http import *
-# from django.views.generic import TemplateView
-# from django.conf import settings
+from myapp.settings import JWT_AUTH
 # super user amelienoury PW4admin
 # https://www.youtube.com/watch?v=PUzgZrS_piQ
 
@@ -40,8 +32,6 @@ class LoginUserView(APIView):
         """Get a token."""
         username = request.data['username']
         password = request.data['password']
-        print(username)
-        print(password)
         user = User.objects.filter(username=username).first()
 
         if user is None:
@@ -104,29 +94,3 @@ class LogoutView(APIView):
             'message': 'success'
         }
         return response
-
-# class LoginView(TemplateView):
-
-#     template_name = 'login.html'
-
-#     def post(self, request, **kwargs):
-
-#         username = request.POST.get('username', False)
-#         password = request.POST.get('password', False)
-#         user = authenticate(username=username, password=password)
-#         if user is not None and user.is_active:
-#             login(request, user)
-#             return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
-
-#         return render(request, self.template_name)
-
-
-# class LogoutView(TemplateView):
-
-#     template_name = 'login.html'
-
-#     def get(self, request, **kwargs):
-
-#         logout(request)
-
-#         return render(request, self.template_name)
