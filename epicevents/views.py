@@ -5,10 +5,11 @@ from epicevents.serializers import (
     EventSerializer,
 )
 from epicevents.models import Client, Employee, Contract, Event
+from epicevents.filters import ContractFilter, ClientFilter, EventFilter, EmployeeFilter
 from epicevents.permission import EventPermission, ClientPermission, EmployeePermission
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
+from django.core import serializers
 
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
@@ -22,11 +23,29 @@ class EmployeesViewset(ModelViewSet):
     serializer_class = EmployeeSerializer
     permission_classes = [IsAuthenticated, EmployeePermission]
 
+    def list(self, request):
+        queryset = self.get_queryset()
+        myfilter = EmployeeFilter(
+            request.GET,
+            queryset=queryset,
+        )
+        serializer = serializers.serialize("json", myfilter.qs)
+        return HttpResponse(serializer, content_type="application/json")
+
 
 class ClientsViewset(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
     permission_classes = [IsAuthenticated, ClientPermission]
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        myfilter = ClientFilter(
+            request.GET,
+            queryset=queryset,
+        )
+        serializer = serializers.serialize("json", myfilter.qs)
+        return HttpResponse(serializer, content_type="application/json")
 
     def create(self, request):
         """
@@ -71,6 +90,20 @@ class ContractsViewset(ModelViewSet):
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
     permission_classes = [IsAuthenticated, ClientPermission]
+    filterset_class = ContractFilter
+
+    def list(self, request, client_pk=None):
+        queryset = self.get_queryset()
+        if client_pk is not None:
+            queryset = Contract.objects.filter(
+                client_contact=client_pk,
+            )
+        myfilter = ContractFilter(
+            request.GET,
+            queryset=queryset,
+        )
+        serializer = serializers.serialize("json", myfilter.qs)
+        return HttpResponse(serializer, content_type="application/json")
 
     def create(self, request, client_pk=None):
         """Create project if permission and add the owner as contributor."""
@@ -111,6 +144,25 @@ class EventsViewset(ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticated, EventPermission]
+
+    def list(self, request, client_pk=None, contract_pk=None):
+        queryset = self.get_queryset()
+
+        if contract_pk and client_pk:
+            contract = Contract.objects.get(
+                pk=contract_pk
+            )
+            if client_pk == contract.id:
+                quesryset = Event.objects.filter(
+                    contract_reference_id=contract_pk,
+                )
+
+        myfilter = EventFilter(
+            request.GET,
+            queryset=queryset,
+        )
+        serializer = serializers.serialize("json", myfilter.qs)
+        return HttpResponse(serializer, content_type="application/json")
 
     def create(self, request, client_pk=None, contract_pk=None):
         """Create project if permission and add the owner as contributor."""

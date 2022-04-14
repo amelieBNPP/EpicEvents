@@ -16,6 +16,9 @@ class Employee(models.Model):
         on_delete=models.CASCADE,
     )
 
+    def __str__(self):
+        return f"{self.employee_contact.username}, role: {self.role} \n"
+
 
 class Client(models.Model):
     compagny_name = models.CharField(max_length=250)
@@ -29,6 +32,9 @@ class Client(models.Model):
         to=Employee,
         on_delete=models.CASCADE,
     )
+
+    def __str__(self):
+        return f"{self.compagny_name}: contact: {self.client_contact.username}, is_client: {self.status}, last_update: {self.last_contact} \n"
 
 
 class Contract(models.Model):
@@ -47,6 +53,9 @@ class Contract(models.Model):
         on_delete=models.CASCADE,
     )
 
+    def __str__(self):
+        return f"Contrat: {self.contract_name}, amount: {self.amount}, signed: {self.signed}, client_contract: {self.client_contact.compagny_name} \n"
+
 
 class Event(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
@@ -63,3 +72,6 @@ class Event(models.Model):
         to=Employee,
         on_delete=models.CASCADE,
     )
+
+    def __str__(self):
+        return f"Event: {self.contract_reference.contract_name} \n"
