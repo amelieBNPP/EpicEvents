@@ -19,7 +19,7 @@ class Employee(models.Model):
 
 class Client(models.Model):
     compagny_name = models.CharField(max_length=250)
-    last_contact = models.DateField(auto_now_add=True)
+    last_contact = models.DateTimeField(auto_now=True)
     status = models.BooleanField()
     client_contact = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
@@ -32,10 +32,10 @@ class Client(models.Model):
 
 
 class Contract(models.Model):
-    created_date = models.DateField(auto_now_add=True)
-    updated_date = models.DateField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
     amount = models.FloatField()
-    payment_due = models.DateField(auto_now_add=True)
+    payment_due = models.DateField()
     client_contact = models.ForeignKey(
         to=Client,
         on_delete=models.CASCADE,
@@ -47,9 +47,9 @@ class Contract(models.Model):
 
 
 class Event(models.Model):
-    created_date = models.DateField(auto_now_add=True)
-    updated_date = models.DateField(auto_now_add=True)
-    event_date = models.DateField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+    event_date = models.DateField()
     notes = models.TextField(max_length=2048, blank=True)
     attendees = models.IntegerField()
     closed = models.BooleanField()
