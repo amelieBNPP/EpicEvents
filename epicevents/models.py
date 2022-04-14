@@ -34,6 +34,8 @@ class Client(models.Model):
 class Contract(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+    contract_name = models.CharField(max_length=250, default="contract")
+    signed = models.BooleanField(default=False)
     amount = models.FloatField()
     payment_due = models.DateField()
     client_contact = models.ForeignKey(
