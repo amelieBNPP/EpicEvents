@@ -5,10 +5,6 @@ from epicevents.models import Client, Contract, Employee, Event
 
 
 class EmployeeSerializer(ModelSerializer):
-    # employee_contact = serializers.SlugRelatedField(
-    #     queryset=User.objects.all(),
-    #     slug_field='username',
-    # )
 
     class Meta:
         model = Employee

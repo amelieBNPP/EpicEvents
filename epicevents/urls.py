@@ -37,5 +37,4 @@ urlpatterns = [
     path('', include(router.urls)),
     path('', include(client_router.urls)),
     path('', include(contract_router.urls)),
-    path('', views.index, name='index'),
 ]

@@ -5,8 +5,10 @@ from epicevents.serializers import (
     EventSerializer,
 )
 from epicevents.models import Client, Employee, Contract, Event
+from epicevents.permission import EventPermission, ClientPermission, EmployeePermission
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
@@ -15,34 +17,26 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import HttpResponse
 
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the EpicEvents index.")
-
-
 class EmployeesViewset(ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, EmployeePermission]
 
 
 class ClientsViewset(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, ClientPermission]
 
     def create(self, request):
         """
         Create Client.
         """
         request_data = request.data.copy()
-        try:
-            employee = get_object_or_404(
-                Employee,
-                employee_contact=self.request.user.id,
-            )
-        except:
-            return HttpResponse("Your are not regiter as employee. Permission denied.")
-
+        employee = get_object_or_404(
+            Employee,
+            employee_contact=self.request.user.id,
+        )
         try:
             client = get_object_or_404(
                 User,
@@ -76,30 +70,19 @@ class ClientsViewset(ModelViewSet):
 class ContractsViewset(ModelViewSet):
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
-    permission_classes = [IsAuthenticated]
-
-    def list(self, request, client_pk=None):
-        """ GET all contracts if permission"""
-        clients = get_object_or_404(Client, pk=client_pk)
-        contracts = get_object_or_404(Contract, client_contact=clients.id)
-        queryset = Contract.objects.filter(client_contact=client_pk)
-        serializer = ContractSerializer(queryset, many=True)
-        return Response(serializer.data)
+    permission_classes = [IsAuthenticated, ClientPermission]
 
     def create(self, request, client_pk=None):
         """Create project if permission and add the owner as contributor."""
         request_data = request.data.copy()
-        try:
-            employee = get_object_or_404(
-                Employee,
-                employee_contact=self.request.user.id,
-            )
-        except:
-            return HttpResponse("Your are not regiter as employee. Permission denied.")
+
+        employee = get_object_or_404(
+            Employee,
+            employee_contact=self.request.user.id,
+        )
 
         try:
-            client = get_object_or_404(
-                Client,
+            client = Client.objects.get(
                 pk=client_pk,
             )
         except:
@@ -127,41 +110,21 @@ class ContractsViewset(ModelViewSet):
 class EventsViewset(ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, EventPermission]
 
     def create(self, request, client_pk=None, contract_pk=None):
         """Create project if permission and add the owner as contributor."""
         request_data = request.data.copy()
-        try:
-            employee = get_object_or_404(
-                Employee,
-                employee_contact=self.request.user.id,
-            )
-        except:
-            return HttpResponse("Your are not regiter as employee. Permission denied.")
 
         try:
-            print(request.data)
-            employee = get_object_or_404(
-                Employee,
-                pk=request.data['support_contact'],
-            )
-        except:
-            return HttpResponse("The support employee does not exist.")
-
-        try:
-            contract = get_object_or_404(
-                Contract,
+            contract = Contract.objects.get(
                 pk=contract_pk,
             )
         except:
             return HttpResponse("Contract does not exists.")
 
         try:
-            client = get_object_or_404(
-                Client,
-                pk=client_pk,
-            )
+            Client.objects.get(pk=client_pk)
         except:
             return HttpResponse("Client does not exists.")
 

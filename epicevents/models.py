@@ -11,7 +11,7 @@ ROLE = (
 class Employee(models.Model):
     function = models.CharField(max_length=250)
     role = models.CharField(choices=ROLE, max_length=25)
-    employee_contact = models.ForeignKey(
+    employee_contact = models.OneToOneField(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
@@ -21,11 +21,11 @@ class Client(models.Model):
     compagny_name = models.CharField(max_length=250)
     last_contact = models.DateTimeField(auto_now=True)
     status = models.BooleanField()
-    client_contact = models.ForeignKey(
+    client_contact = models.OneToOneField(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    sales_contact = models.ForeignKey(
+    sales_contact = models.OneToOneField(
         to=Employee,
         on_delete=models.CASCADE,
     )
