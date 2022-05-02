@@ -17,7 +17,7 @@ class Employee(models.Model):
     )
 
     def __str__(self):
-        return f"{self.employee_contact.username}, role: {self.role} \n"
+        return f"{self.employee_contact.username} - {self.role}"
 
 
 class Client(models.Model):
@@ -34,7 +34,7 @@ class Client(models.Model):
     )
 
     def __str__(self):
-        return f"{self.compagny_name}: contact: {self.client_contact.username}, is_client: {self.status}, last_update: {self.last_contact} \n"
+        return f"{self.compagny_name} - {self.client_contact.username}"
 
 
 class Contract(models.Model):
@@ -54,7 +54,7 @@ class Contract(models.Model):
     )
 
     def __str__(self):
-        return f"Contrat: {self.contract_name}, amount: {self.amount}, signed: {self.signed}, client_contract: {self.client_contact.compagny_name} \n"
+        return f"{self.contract_name} - {self.client_contact.compagny_name}"
 
 
 class Event(models.Model):
@@ -74,4 +74,4 @@ class Event(models.Model):
     )
 
     def __str__(self):
-        return f"Event: {self.contract_reference.contract_name} \n"
+        return f"Event: {self.contract_reference.contract_name}"

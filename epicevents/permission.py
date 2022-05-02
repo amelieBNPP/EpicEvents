@@ -2,7 +2,7 @@ from rest_framework.permissions import BasePermission, SAFE_METHODS
 from .models import Employee, Client, Event
 
 
-class EmployeePermission(BasePermission):
+class ManagerPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:
             return True
@@ -13,7 +13,7 @@ class EmployeePermission(BasePermission):
         return employee.role == 'manager'
 
 
-class ClientPermission(BasePermission):
+class SalesPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         """
         For safe methode (GET) => return permission
@@ -36,7 +36,7 @@ class ClientPermission(BasePermission):
         return False
 
 
-class EventPermission(BasePermission):
+class SupportPermission(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         """

@@ -6,7 +6,7 @@ from epicevents.serializers import (
 )
 from epicevents.models import Client, Employee, Contract, Event
 from epicevents.filters import ContractFilter, ClientFilter, EventFilter, EmployeeFilter
-from epicevents.permission import EventPermission, ClientPermission, EmployeePermission
+from epicevents.permission import ManagerPermission, SalesPermission, SupportPermission
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.core import serializers
@@ -21,7 +21,7 @@ from django.http import HttpResponse
 class EmployeesViewset(ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
-    permission_classes = [IsAuthenticated, EmployeePermission]
+    permission_classes = [IsAuthenticated, ManagerPermission]
 
     def list(self, request):
         queryset = self.get_queryset()
@@ -36,7 +36,7 @@ class EmployeesViewset(ModelViewSet):
 class ClientsViewset(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [IsAuthenticated, ClientPermission]
+    permission_classes = [IsAuthenticated, SalesPermission]
 
     def list(self, request):
         queryset = self.get_queryset()
@@ -89,7 +89,7 @@ class ClientsViewset(ModelViewSet):
 class ContractsViewset(ModelViewSet):
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
-    permission_classes = [IsAuthenticated, ClientPermission]
+    permission_classes = [IsAuthenticated, SalesPermission]
     filterset_class = ContractFilter
 
     def list(self, request, client_pk=None):
@@ -143,7 +143,7 @@ class ContractsViewset(ModelViewSet):
 class EventsViewset(ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    permission_classes = [IsAuthenticated, EventPermission]
+    permission_classes = [IsAuthenticated, SupportPermission]
 
     def list(self, request, client_pk=None, contract_pk=None):
         queryset = self.get_queryset()

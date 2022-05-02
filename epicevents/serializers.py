@@ -1,10 +1,12 @@
 from django.contrib.auth.models import User
 from rest_framework.serializers import ModelSerializer
-
+from rest_framework import serializers
 from epicevents.models import Client, Contract, Employee, Event
 
 
 class EmployeeSerializer(ModelSerializer):
+
+    employee_contact = serializers.StringRelatedField()
 
     class Meta:
         model = Employee
@@ -17,6 +19,8 @@ class EmployeeSerializer(ModelSerializer):
 
 
 class ClientSerializer(ModelSerializer):
+    client_contact = serializers.StringRelatedField()
+    sales_contact = serializers.StringRelatedField()
 
     class Meta:
         model = Client
@@ -30,6 +34,10 @@ class ClientSerializer(ModelSerializer):
 
 
 class ContractSerializer(ModelSerializer):
+
+    client_contact = serializers.StringRelatedField()
+    sales_contact = serializers.StringRelatedField()
+
     class Meta:
         model = Contract
         fields = [
@@ -42,6 +50,10 @@ class ContractSerializer(ModelSerializer):
 
 
 class EventSerializer(ModelSerializer):
+
+    contract_reference = serializers.StringRelatedField()
+    support_contact = serializers.StringRelatedField()
+
     class Meta:
         model = Event
         fields = [

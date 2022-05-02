@@ -1,4 +1,4 @@
-# openclassroom - projet11 - application with Flask
+# openclassroom - projet 12 - CRM
 
 | EpicEvents |
 |:----------:|
@@ -25,7 +25,7 @@ Using [diagrams.net](https://www.diagrams.net/), database is reprented as below 
 - Contract: signed by client to organize an event
 - Event: all event informations
 
-![plot](./ERD.png)
+![plot](./Diagram.ERD.png)
 
 ### Installation
 
@@ -66,6 +66,59 @@ The API can be tested in local at the following adresse : http://127.0.0.1:8000/
 Create a superUser in `manage.py` directory : 
 ```bash
 python manage.py createsuperuser
+```
+
+### Endpoints and filters
+
+From postman, endpoints can be tested with the following routes : 
+
+Create user with
+```bash
+http://127.0.0.1:8000/user/signup/
+http://127.0.0.1:8000/user/login/
+http://127.0.0.1:8000/user/user/
+```
+
+create Employee with
+```bash
+http://127.0.0.1:8000/epicevents/employees/
+http://127.0.0.1:8000/epicevents/employees/?role=sales
+```
+
+create Client with
+```bash
+http://127.0.0.1:8000/epicevents/clients/
+http://127.0.0.1:8000/epicevents/clients/?sort_by=compagny_name
+```
+
+create Contract with
+```bash
+http://127.0.0.1:8000/epicevents/contracts/
+http://127.0.0.1:8000/epicevents/clients/<client pk>/contracts/
+http://127.0.0.1:8000/epicevents/clients/9/contracts/?min_amount=10000&max_amount=25000
+```
+
+create Event with
+```bash
+http://127.0.0.1:8000/epicevents/event/
+http://127.0.0.1:8000/epicevents/clients/<client pk>/contracts/<contract pk>/events/
+http://127.0.0.1:8000/epicevents/clients/<client pk>/contracts/<contract pk>/events?min_attendees=100&max_attendees=200
+```
+
+All details are sumup in [postman documentation](https://documenter.getpostman.com/view/14836417/UyrHdsws).
+### Permissions
+
+In the aim to improve security, permissions is set:
+- manager GET/PUT/POST/DELETE client/employee/contract/event
+- sales GET/PUT/POST/DELETE client/contract/event for which the sales is working, GET otherwise
+- support GET/PUT/POST/DELETE event for which the sales is working, GET otherwise
+
+### Test
+
+Launch tests
+To ensure new features do not add any regression in the code, run the tests with the following commands :
+```bash
+pytest
 ```
 
 ### Sources

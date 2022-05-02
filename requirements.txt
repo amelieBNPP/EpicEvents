@@ -33,7 +33,7 @@ docopt==0.6.2
 docutils==0.17.1
 drf-nested-routers==0.93.4
 filelock==3.0.12
-flake8==3.8.4
+flake8==4.0.1
 Flask==2.0.2
 Flask-BabelEx==0.9.4
 Flask-BasicAuth==0.2.0
@@ -121,7 +121,6 @@ pycairo==1.16.2
 pycodestyle==2.8.0
 pycparser==2.20
 pycups==1.9.73
-pyflakes==2.2.0
 Pygments==2.8.1
 PyGObject==3.36.0
 PyJWT==1.7.1
