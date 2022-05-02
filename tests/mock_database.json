@@ -1,0 +1,160 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "username": "newmanager",
+            "email": "newmanager@gmail.com",
+            "first_name": "new",
+            "last_name": "manager",
+            "password": "Password12345"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "username": "newsupport",
+            "email": "newsupport@gmail.com",
+            "first_name": "new",
+            "last_name": "support",
+            "password": "Password12345"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 3,
+        "fields": {
+            "username": "newsales",
+            "email": "newsales@gmail.com",
+            "first_name": "new",
+            "last_name": "sales",
+            "password": "Password12345"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 4,
+        "fields": {
+            "username": "newclient",
+            "email": "newclient@gmail.com",
+            "first_name": "new",
+            "last_name": "client",
+            "password": "Password12345"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 5,
+        "fields": {
+            "username": "othersales",
+            "email": "othersales@gmail.com",
+            "first_name": "other",
+            "last_name": "sales",
+            "password": "Password12345"
+        }
+    },
+    {
+        "model": "epicevents.employee",
+        "pk": 1,
+        "fields": {
+            "function": "manager",
+            "role": "manager",
+            "employee_contact": 1
+        }
+    },
+    {
+        "model": "epicevents.employee",
+        "pk": 2,
+        "fields": {
+            "function": "support",
+            "role": "support",
+            "employee_contact": 2
+        }
+    },
+    {
+        "model": "epicevents.employee",
+        "pk": 3,
+        "fields": {
+            "function": "sales",
+            "role": "sales",
+            "employee_contact": 3
+        }
+    },
+    {
+        "model": "epicevents.employee",
+        "pk": 4,
+        "fields": {
+            "function": "sales other",
+            "role": "sales",
+            "employee_contact": 4
+        }
+    },
+    {
+        "model": "epicevents.client",
+        "pk": 1,
+        "fields": {
+            "compagny_name": "newCompagnie",
+            "status": true,
+            "client_contact": 4,
+            "last_contact": "2022-04-29T10:10:10Z",
+            "sales_contact": 3
+        }
+    },
+    {
+        "model": "epicevents.contract",
+        "pk": 1,
+        "fields": {
+            "created_date": "2022-04-29T10:10:10Z",
+            "updated_date": "2022-04-29T10:10:10Z",
+            "contract_name": "new contract",
+            "signed": false,
+            "amount": 5000,
+            "payment_due": "2022-07-21",
+            "client_contact": 1,
+            "sales_contact": 3
+        }
+    },
+    {
+        "model": "epicevents.contract",
+        "pk": 2,
+        "fields": {
+            "created_date": "2022-04-29T10:10:10Z",
+            "updated_date": "2022-04-29T10:10:10Z",
+            "contract_name": "old contract",
+            "signed": true,
+            "amount": 30000,
+            "payment_due": "2022-07-21",
+            "client_contact": 1,
+            "sales_contact": 3
+        }
+    },
+    {
+        "model": "epicevents.event",
+        "pk": 1,
+        "fields": {
+            "created_date": "2022-04-29T10:10:10Z",
+            "updated_date": "2022-04-29T10:10:10Z",
+            "event_date": "2022-07-21",
+            "notes": "medium event",
+            "closed": false,
+            "attendees": 200,
+            "contract_reference": 2,
+            "support_contact": 2
+        }
+    },
+    {
+        "model": "epicevents.event",
+        "pk": 2,
+        "fields": {
+            "created_date": "2022-04-29T10:10:10Z",
+            "updated_date": "2022-04-29T10:10:10Z",
+            "event_date": "2022-07-21",
+            "notes": "big event",
+            "closed": false,
+            "attendees": 700,
+            "contract_reference": 2,
+            "support_contact": 2
+        }
+    }
+]
