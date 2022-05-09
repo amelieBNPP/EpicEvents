@@ -68,6 +68,13 @@ Create a superUser in `manage.py` directory :
 python manage.py createsuperuser
 ```
 
+### FRONTEND
+
+Django Administration will be used as a simple frontend : 
+- launch server
+- run : `http://127.0.0.1:8000/admin/`
+- connect with your supersUser identifiers
+
 ### Endpoints and filters
 
 From postman, endpoints can be tested with the following routes : 
@@ -121,7 +128,21 @@ To ensure new features do not add any regression in the code, run the tests with
 pytest
 ```
 
+### Logging
+
+In order to configure logging, you use LOGGING in settings.
+A file with all Warning, error, critical will be report in a `debug.log` file at the root of the project.
+```bash
+[09/May/2022 14:15:57,629] [31;1mUnauthorized: /user/login/[0m
+[09/May/2022 14:15:57] [31;1m"POST /user/login/ HTTP/1.1" 401 32[0m
+[09/May/2022 14:18:26,284] [33mNot Found: /[0m
+[09/May/2022 14:18:26] [33m"GET / HTTP/1.1" 404 2274[0m
+[09/May/2022 14:20:25,299] [31;1mForbidden: /epicevents/employees/1/[0m
+[09/May/2022 14:20:25] [31;1m"DELETE /epicevents/employees/1/ HTTP/1.1" 403 63[0m
+```
+
 ### Sources
 
-Starting with django : https://docs.djangoproject.com/fr/4.0/intro/tutorial01/
-Connexion with PostgreSQL : https://dev.to/jkaylight/django-rest-framework-with-postgresql-a-crud-tutorial-1l34
+Starting with django : https://docs.djangoproject.com/fr/4.0/intro/tutorial01/\n
+Connexion with PostgreSQL : https://dev.to/jkaylight/django-rest-framework-with-postgresql-a-crud-tutorial-1l34\n
+Configuring logging : https://docs.djangoproject.com/en/4.0/topics/logging/#configuring-logging\n
