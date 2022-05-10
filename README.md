@@ -50,6 +50,7 @@ Install dependencies :
 ```bash
 pip install -r requirements.txt
 ```
+
 *Install dependancies each time we develop on this project.*
 
 ### Run server
@@ -127,7 +128,7 @@ To ensure new features do not add any regression in the code, run the tests with
 ```bash
 pytest
 ```
-
+![plot](./pytest_report.png)
 ### Logging
 
 In order to configure logging, you use LOGGING in settings.
@@ -145,4 +146,5 @@ A file with all Warning, error, critical will be report in a `debug.log` file at
 
 Starting with django : https://docs.djangoproject.com/fr/4.0/intro/tutorial01/\n
 Connexion with PostgreSQL : https://dev.to/jkaylight/django-rest-framework-with-postgresql-a-crud-tutorial-1l34\n
+Pytest : https://pytest-django.readthedocs.io/en/latest/helpers.html#client-django-test-client
 Configuring logging : https://docs.djangoproject.com/en/4.0/topics/logging/#configuring-logging\n

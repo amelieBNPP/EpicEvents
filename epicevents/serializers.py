@@ -6,7 +6,10 @@ from epicevents.models import Client, Contract, Employee, Event
 
 class EmployeeSerializer(ModelSerializer):
 
-    employee_contact = serializers.StringRelatedField()
+    employee_contact = serializers.SlugRelatedField(
+        queryset=User.objects.all(),
+        slug_field='username',
+    )
 
     class Meta:
         model = Employee
@@ -19,9 +22,14 @@ class EmployeeSerializer(ModelSerializer):
 
 
 class ClientSerializer(ModelSerializer):
-    client_contact = serializers.StringRelatedField()
-    sales_contact = serializers.StringRelatedField()
-
+    client_contact = serializers.SlugRelatedField(
+        queryset=User.objects.all(),
+        slug_field='username',
+    )
+    sales_contact = serializers.SlugRelatedField(
+        queryset=Employee.objects.all(),
+        slug_field='id',
+    )
     class Meta:
         model = Client
         fields = [
@@ -35,8 +43,14 @@ class ClientSerializer(ModelSerializer):
 
 class ContractSerializer(ModelSerializer):
 
-    client_contact = serializers.StringRelatedField()
-    sales_contact = serializers.StringRelatedField()
+    client_contact = serializers.SlugRelatedField(
+        queryset=Client.objects.all(),
+        slug_field='id',
+    )
+    sales_contact = serializers.SlugRelatedField(
+        queryset=Employee.objects.all(),
+        slug_field='id',
+    )
 
     class Meta:
         model = Contract
@@ -51,8 +65,14 @@ class ContractSerializer(ModelSerializer):
 
 class EventSerializer(ModelSerializer):
 
-    contract_reference = serializers.StringRelatedField()
-    support_contact = serializers.StringRelatedField()
+    contract_reference = serializers.SlugRelatedField(
+        queryset=Contract.objects.all(),
+        slug_field='id',
+    )        
+    support_contact = serializers.SlugRelatedField(
+        queryset=Employee.objects.all(),
+        slug_field='id',
+    )
 
     class Meta:
         model = Event

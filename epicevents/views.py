@@ -59,7 +59,7 @@ class ClientsViewset(ModelViewSet):
         try:
             client = get_object_or_404(
                 User,
-                pk=request.data['client_contact'],
+                username=request.data['client_contact'],
             )
         except:
             return HttpResponse("Client user does not exists.")
@@ -67,7 +67,6 @@ class ClientsViewset(ModelViewSet):
         request_data.update(
             {
                 'sales_contact': employee.id,
-                'client_contact': client.id,
             }
         )
 

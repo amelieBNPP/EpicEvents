@@ -9,7 +9,7 @@ def test_create_employee(new_manager_loggin):
         data={
             "function": "support",
             "role": "support",
-            "employee_contact": 2
+            "employee_contact": "newsupport"
         },
     )
     assert Employee.objects.count() == nb_employees + 1
@@ -19,12 +19,13 @@ def test_create_employee(new_manager_loggin):
 def test_create_client(new_sales_loggin):
     client = new_sales_loggin
     nb_clients = Client.objects.count()
+    print(nb_clients)
     response = client.post(
         path='/epicevents/clients/',
         data={
             'compagny_name': 'new_compagny',
             'status': False,
-            'client_contact': 4,
+            'client_contact': 'newclient',
         },
     )
     assert Client.objects.count() == nb_clients + 1
