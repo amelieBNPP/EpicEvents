@@ -144,7 +144,7 @@ A file with all Warning, error, critical will be report in a `debug.log` file at
 
 ### Sources
 
-Starting with django : https://docs.djangoproject.com/fr/4.0/intro/tutorial01/\n
-Connexion with PostgreSQL : https://dev.to/jkaylight/django-rest-framework-with-postgresql-a-crud-tutorial-1l34\n
+Starting with django : https://docs.djangoproject.com/fr/4.0/intro/tutorial01/
+Connexion with PostgreSQL : https://dev.to/jkaylight/django-rest-framework-with-postgresql-a-crud-tutorial-1l34
 Pytest : https://pytest-django.readthedocs.io/en/latest/helpers.html#client-django-test-client
-Configuring logging : https://docs.djangoproject.com/en/4.0/topics/logging/#configuring-logging\n
+Configuring logging : https://docs.djangoproject.com/en/4.0/topics/logging/#configuring-logging

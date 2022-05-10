@@ -1,3 +1,7 @@
+from datetime import datetime
+from http import client
+
+from pkg_resources import require
 from epicevents.serializers import (
     EmployeeSerializer,
     ClientSerializer,
@@ -191,5 +195,46 @@ class EventsViewset(ModelViewSet):
             return Response(
                 data=serializer.data,
                 status=status.HTTP_201_CREATED,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, client_pk=None, contract_pk=None, pk=None):
+        """Update project until the event is open and if permission"""
+        request_data = request.data.copy()
+        
+        try:
+            event = Event.objects.get(pk=pk)
+        except:
+            return HttpResponse("Event does not exists.")
+        if datetime(event.event_date.year, event.event_date.month, event.event_date.day) < datetime.now():
+            return HttpResponse("Event already past.")
+        try:
+            contract = Contract.objects.get(
+                pk=contract_pk,
+            )
+        except:
+            return HttpResponse("Contract does not exists.")
+
+        try:
+            Client.objects.get(pk=client_pk)
+        except:
+            return HttpResponse("Client does not exists.")
+
+        request_data.update(
+            {
+                'closed': request.data['closed'],
+                'attendees': request.data['attendees'],
+                'event_date': request.data['event_date'],
+                'notes': request.data['notes'],
+                'support_contact':request.data['support_contact'],
+                'contract_reference': request.data['contract_reference'],
+            }
+        )
+        serializer = EventSerializer(event, data=request_data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                data=serializer.data,
+                status=status.HTTP_200_OK,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
