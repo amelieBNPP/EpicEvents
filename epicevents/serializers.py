@@ -38,6 +38,7 @@ class ClientSerializer(ModelSerializer):
             'status',
             'client_contact',
             'sales_contact',
+            'last_contact',
         ]
 
 
@@ -56,8 +57,12 @@ class ContractSerializer(ModelSerializer):
         model = Contract
         fields = [
             'id',
+            'contract_name',
+            'signed',
             'amount',
             'payment_due',
+            'updated_date',
+            'created_date',
             'client_contact',
             'sales_contact',
         ]
@@ -84,4 +89,7 @@ class EventSerializer(ModelSerializer):
             'closed',
             'contract_reference',
             'support_contact',
+            'updated_date',
+            'created_date',
         ]
+

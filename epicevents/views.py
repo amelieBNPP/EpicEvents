@@ -1,7 +1,5 @@
 from datetime import datetime
-from http import client
 
-from pkg_resources import require
 from epicevents.serializers import (
     EmployeeSerializer,
     ClientSerializer,
@@ -19,7 +17,7 @@ from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 
 
 class EmployeesViewset(ModelViewSet):
@@ -29,12 +27,47 @@ class EmployeesViewset(ModelViewSet):
 
     def list(self, request):
         queryset = self.get_queryset()
+        self.check_object_permissions(request, None)
         myfilter = EmployeeFilter(
             request.GET,
             queryset=queryset,
         )
         serializer = serializers.serialize("json", myfilter.qs)
         return HttpResponse(serializer, content_type="application/json")
+
+    def create(self, request):
+        """
+        Create Employee.
+        """
+        self.check_object_permissions(request, None)
+        request_data = request.data.copy()
+        user = get_object_or_404(
+            User,
+            username=request.data['employee_contact'],
+        )
+        employee = Employee.objects.filter(
+            employee_contact=user.pk,
+        )
+
+        if employee:
+            return Response(
+                data="Employee already exists.",
+                status=status.HTTP_409_CONFLICT,
+            )
+
+        serializer = EmployeeSerializer(data=request.data)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response(
+                data=serializer.data,
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(
+            data=serializer.data,
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 class ClientsViewset(ModelViewSet):
@@ -44,6 +77,7 @@ class ClientsViewset(ModelViewSet):
 
     def list(self, request):
         queryset = self.get_queryset()
+        self.check_object_permissions(request, None)
         myfilter = ClientFilter(
             request.GET,
             queryset=queryset,
@@ -60,13 +94,24 @@ class ClientsViewset(ModelViewSet):
             Employee,
             employee_contact=self.request.user.id,
         )
+        self.check_object_permissions(request, employee)
         try:
-            client = get_object_or_404(
-                User,
+            user = User.objects.get(
                 username=request.data['client_contact'],
             )
         except:
-            return HttpResponse("Client user does not exists.")
+            return Response(
+                data="User does not exists.",
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        
+        client = Client.objects.filter(client_contact=user.pk)
+        if client:
+            return Response(
+                data="Client already exists.",
+                status=status.HTTP_409_CONFLICT,
+            )
+
 
         request_data.update(
             {
@@ -97,6 +142,7 @@ class ContractsViewset(ModelViewSet):
 
     def list(self, request, client_pk=None):
         queryset = self.get_queryset()
+        self.check_object_permissions(request, None)
         if client_pk is not None:
             queryset = Contract.objects.filter(
                 client_contact=client_pk,
@@ -111,7 +157,7 @@ class ContractsViewset(ModelViewSet):
     def create(self, request, client_pk=None):
         """Create project if permission and add the owner as contributor."""
         request_data = request.data.copy()
-
+        self.check_object_permissions(request, None)
         employee = get_object_or_404(
             Employee,
             employee_contact=self.request.user.id,
@@ -122,7 +168,10 @@ class ContractsViewset(ModelViewSet):
                 pk=client_pk,
             )
         except:
-            return HttpResponse("Client does not exists.")
+            return Response(
+                data="Client does not exists.",
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
         request_data.update(
             {
@@ -150,7 +199,7 @@ class EventsViewset(ModelViewSet):
 
     def list(self, request, client_pk=None, contract_pk=None):
         queryset = self.get_queryset()
-
+        self.check_object_permissions(request, None)
         if contract_pk and client_pk:
             contract = Contract.objects.get(
                 pk=contract_pk
@@ -170,19 +219,32 @@ class EventsViewset(ModelViewSet):
     def create(self, request, client_pk=None, contract_pk=None):
         """Create project if permission and add the owner as contributor."""
         request_data = request.data.copy()
-
         try:
             contract = Contract.objects.get(
                 pk=contract_pk,
             )
         except:
-            return HttpResponse("Contract does not exists.")
+            return Response(
+                data="Contract does not exists.",
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
         try:
             Client.objects.get(pk=client_pk)
         except:
-            return HttpResponse("Client does not exists.")
-
+            return Response(
+                data="Client does not exists.",
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        
+        is_event = Event.objects.filter(contract_reference=contract_pk)
+        if is_event:
+            return Response(
+                data="Event already exists.",
+                status=status.HTTP_409_CONFLICT,
+            )
+            
+        self.check_object_permissions(request, contract)
         request_data.update(
             {
                 'closed': False,
@@ -201,24 +263,35 @@ class EventsViewset(ModelViewSet):
     def update(self, request, client_pk=None, contract_pk=None, pk=None):
         """Update project until the event is open and if permission"""
         request_data = request.data.copy()
-        
+        self.check_object_permissions(request, None)
         try:
             event = Event.objects.get(pk=pk)
         except:
-            return HttpResponse("Event does not exists.")
+            return Response(
+                data="Event does not exists.",
+                status=status.HTTP_404_NOT_FOUND,
+            )
         if datetime(event.event_date.year, event.event_date.month, event.event_date.day) < datetime.now():
-            return HttpResponse("Event already past.")
+            return Response(
+                data="Event already past.",
+                status=status.HTTP_409_CONFLICT,
+            )
         try:
             contract = Contract.objects.get(
                 pk=contract_pk,
             )
         except:
-            return HttpResponse("Contract does not exists.")
-
+            return Response(
+                data="Contract does not exists.",
+                status=status.HTTP_404_NOT_FOUND,
+            )
         try:
             Client.objects.get(pk=client_pk)
         except:
-            return HttpResponse("Client does not exists.")
+            return Response(
+                data="Client does not exists.",
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
         request_data.update(
             {
@@ -227,7 +300,6 @@ class EventsViewset(ModelViewSet):
                 'event_date': request.data['event_date'],
                 'notes': request.data['notes'],
                 'support_contact':request.data['support_contact'],
-                'contract_reference': request.data['contract_reference'],
             }
         )
         serializer = EventSerializer(event, data=request_data)
