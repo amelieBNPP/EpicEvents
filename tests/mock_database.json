@@ -55,6 +55,17 @@
         }
     },
     {
+        "model": "auth.user",
+        "pk": 6,
+        "fields": {
+            "username": "otherclient",
+            "email": "otherclient@gmail.com",
+            "first_name": "other",
+            "last_name": "client",
+            "password": "Password12345"
+        }
+    },
+    {
         "model": "epicevents.employee",
         "pk": 1,
         "fields": {
@@ -139,20 +150,6 @@
             "notes": "medium event",
             "closed": false,
             "attendees": 200,
-            "contract_reference": 2,
-            "support_contact": 2
-        }
-    },
-    {
-        "model": "epicevents.event",
-        "pk": 2,
-        "fields": {
-            "created_date": "2022-04-29T10:10:10Z",
-            "updated_date": "2022-04-29T10:10:10Z",
-            "event_date": "2022-07-21",
-            "notes": "big event",
-            "closed": false,
-            "attendees": 700,
             "contract_reference": 2,
             "support_contact": 2
         }

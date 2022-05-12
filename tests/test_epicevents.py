@@ -7,9 +7,9 @@ def test_create_employee(new_manager_loggin):
     response = client.post(
         path='/epicevents/employees/',
         data={
-            "function": "support",
-            "role": "support",
-            "employee_contact": "newsupport"
+            "function": "sales",
+            "role": "sales",
+            "employee_contact": "othersales"
         },
     )
     assert Employee.objects.count() == nb_employees + 1
@@ -23,9 +23,9 @@ def test_create_client(new_sales_loggin):
     response = client.post(
         path='/epicevents/clients/',
         data={
-            'compagny_name': 'new_compagny',
+            'compagny_name': 'other_compagny',
             'status': False,
-            'client_contact': 'newclient',
+            'client_contact': 'otherclient',
         },
     )
     assert Client.objects.count() == nb_clients + 1
@@ -38,6 +38,8 @@ def test_create_contract(new_sales_loggin):
     response = client.post(
         path='/epicevents/clients/1/contracts/',
         data={
+            "contract_name": "contract",
+            "signed": False,
             "amount": 5000,
             "payment_due": "2022-07-21",
         },
@@ -55,7 +57,7 @@ def test_create_event(new_sales_loggin):
             "attendees": 350,
             "event_date": "2022-06-30",
             "notes": "soirée de gala avec très hautes prestations",
-            "support_contact": 2
+            "support_contact": 3
         },
     )
     assert Event.objects.count() == nb_events + 1
