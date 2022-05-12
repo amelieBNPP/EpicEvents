@@ -25,7 +25,7 @@ Using [diagrams.net](https://www.diagrams.net/), database is reprented as below 
 - Contract: signed by client to organize an event
 - Event: all event informations
 
-![plot](./Diagram.ERD.png)
+![plot](./Diagram_ERD.png)
 
 ### Installation
 
