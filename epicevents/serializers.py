@@ -30,6 +30,7 @@ class ClientSerializer(ModelSerializer):
         queryset=Employee.objects.all(),
         slug_field='id',
     )
+
     class Meta:
         model = Client
         fields = [
@@ -73,7 +74,7 @@ class EventSerializer(ModelSerializer):
     contract_reference = serializers.SlugRelatedField(
         queryset=Contract.objects.all(),
         slug_field='id',
-    )        
+    )
     support_contact = serializers.SlugRelatedField(
         queryset=Employee.objects.all(),
         slug_field='id',
@@ -92,4 +93,3 @@ class EventSerializer(ModelSerializer):
             'updated_date',
             'created_date',
         ]
-

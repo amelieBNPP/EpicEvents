@@ -1,8 +1,4 @@
-from django.urls import path
-
-from . import views
-
-from rest_framework import routers
+from django.urls import path, include
 from rest_framework_nested import routers
 from epicevents.views import (
     EmployeesViewset,
@@ -10,7 +6,7 @@ from epicevents.views import (
     ContractsViewset,
     EventsViewset,
 )
-from django.urls import path, include
+
 
 # Ici nous créons notre routeur
 router = routers.SimpleRouter()

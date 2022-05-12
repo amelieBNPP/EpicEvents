@@ -1,4 +1,4 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import BasePermission
 from .models import Employee, Client, Event
 
 
@@ -6,7 +6,7 @@ class ManagerPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         try:
             employee = Employee.objects.get(employee_contact=request.user)
-        except:
+        except Employee.DoesNotExist:
             return False
         if request.method == 'GET':
             return True
@@ -24,7 +24,7 @@ class SalesPermission(BasePermission):
             return True
         try:
             employee = Employee.objects.get(employee_contact=request.user)
-        except:
+        except Employee.DoesNotExist:
             return False
         if employee.role == 'manager':
             return True
@@ -52,7 +52,7 @@ class SupportPermission(BasePermission):
 
         try:
             employee = Employee.objects.get(employee_contact=request.user)
-        except:
+        except Employee.DoesNotExist:
             return False
 
         if employee.role == 'manager':

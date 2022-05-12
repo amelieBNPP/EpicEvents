@@ -17,7 +17,7 @@ from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 
 
 class EmployeesViewset(ModelViewSet):
@@ -40,7 +40,6 @@ class EmployeesViewset(ModelViewSet):
         Create Employee.
         """
         self.check_object_permissions(request, None)
-        request_data = request.data.copy()
         user = get_object_or_404(
             User,
             username=request.data['employee_contact'],
@@ -99,19 +98,18 @@ class ClientsViewset(ModelViewSet):
             user = User.objects.get(
                 username=request.data['client_contact'],
             )
-        except:
+        except User.DoesNotExist:
             return Response(
                 data="User does not exists.",
                 status=status.HTTP_404_NOT_FOUND,
             )
-        
+
         client = Client.objects.filter(client_contact=user.pk)
         if client:
             return Response(
                 data="Client already exists.",
                 status=status.HTTP_409_CONFLICT,
             )
-
 
         request_data.update(
             {
@@ -167,7 +165,7 @@ class ContractsViewset(ModelViewSet):
             client = Client.objects.get(
                 pk=client_pk,
             )
-        except:
+        except Client.DoesNotExist:
             return Response(
                 data="Client does not exists.",
                 status=status.HTTP_404_NOT_FOUND,
@@ -205,7 +203,7 @@ class EventsViewset(ModelViewSet):
                 pk=contract_pk
             )
             if client_pk == contract.id:
-                quesryset = Event.objects.filter(
+                queryset = Event.objects.filter(
                     contract_reference_id=contract_pk,
                 )
 
@@ -223,7 +221,7 @@ class EventsViewset(ModelViewSet):
             contract = Contract.objects.get(
                 pk=contract_pk,
             )
-        except:
+        except Contract.DoesNotExist:
             return Response(
                 data="Contract does not exists.",
                 status=status.HTTP_404_NOT_FOUND,
@@ -231,19 +229,19 @@ class EventsViewset(ModelViewSet):
 
         try:
             Client.objects.get(pk=client_pk)
-        except:
+        except Client.DoesNotExist:
             return Response(
                 data="Client does not exists.",
                 status=status.HTTP_404_NOT_FOUND,
             )
-        
+
         is_event = Event.objects.filter(contract_reference=contract_pk)
         if is_event:
             return Response(
                 data="Event already exists.",
                 status=status.HTTP_409_CONFLICT,
             )
-            
+
         self.check_object_permissions(request, contract)
         request_data.update(
             {
@@ -266,7 +264,7 @@ class EventsViewset(ModelViewSet):
         self.check_object_permissions(request, None)
         try:
             event = Event.objects.get(pk=pk)
-        except:
+        except Event.DoesNotExist:
             return Response(
                 data="Event does not exists.",
                 status=status.HTTP_404_NOT_FOUND,
@@ -277,17 +275,15 @@ class EventsViewset(ModelViewSet):
                 status=status.HTTP_409_CONFLICT,
             )
         try:
-            contract = Contract.objects.get(
-                pk=contract_pk,
-            )
-        except:
+            Contract.objects.get(pk=contract_pk)
+        except Contract.DoesNotExist:
             return Response(
                 data="Contract does not exists.",
                 status=status.HTTP_404_NOT_FOUND,
             )
         try:
             Client.objects.get(pk=client_pk)
-        except:
+        except Client.DoesNotExist:
             return Response(
                 data="Client does not exists.",
                 status=status.HTTP_404_NOT_FOUND,
@@ -299,7 +295,7 @@ class EventsViewset(ModelViewSet):
                 'attendees': request.data['attendees'],
                 'event_date': request.data['event_date'],
                 'notes': request.data['notes'],
-                'support_contact':request.data['support_contact'],
+                'support_contact': request.data['support_contact'],
             }
         )
         serializer = EventSerializer(event, data=request_data)
