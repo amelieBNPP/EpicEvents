@@ -16,10 +16,9 @@ def test_create_employee(new_manager_loggin):
     assert response.status_code == 201
 
 
-def test_create_client(new_sales_loggin):
-    client = new_sales_loggin
+def test_create_client(new_manager_loggin):
+    client = new_manager_loggin
     nb_clients = Client.objects.count()
-    print(nb_clients)
     response = client.post(
         path='/epicevents/clients/',
         data={

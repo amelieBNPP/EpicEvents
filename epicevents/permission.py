@@ -30,7 +30,7 @@ class SalesPermission(BasePermission):
             return True
         if employee.role == 'sales':
             if obj:
-                return True
+                return obj.sales_contact==employee
             else:
                 client = Client.objects.get(
                     pk=view.kwargs['client_pk'],
@@ -67,7 +67,7 @@ class SupportPermission(BasePermission):
                 return False
             else:
                 event = Event.objects.get(
-                    contract_reference=view.kwargs['pk'],
+                    pk=view.kwargs['pk'],
                 )
             return event.support_contact.id == employee.id
         return False
